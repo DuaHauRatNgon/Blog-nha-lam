@@ -5,6 +5,7 @@ const BlogPost = require('./models/BlogPost.js')
 
 const app = express();
 const port = 3005;
+const path = require('path')
 
 app.use(express.static('public'));
 
@@ -19,10 +20,8 @@ mongoose.connect('mongodb://localhost/test_my_database', {
     useNewUrlParser: true
 });
 
-
-// app.get('/', (request, response) => {
-//     response.sendFile(path.resolve(__dirname, 'pages/index.html'));
-// })
+const fileUpload = require('express-fileupload')
+app.use(fileUpload())
 
 //mac dinh
 // app.get('/', (request, response) => {
@@ -40,14 +39,11 @@ app.get('/', (request, response) => {
     })
 })
 
-// app.get('/about', (req, res) => {
-//     //res.sendFile(path.resolve(__dirname,'pages/about.html'))
-//     res.render('about');
-// })
-// app.get('/contact', (req, res) => {
-//     //res.sendFile(path.resolve(__dirname,'pages/contact.html'))
-//     res.render('contact');
-// })
+app.get('/about', (req, res) => {
+    //res.sendFile(path.resolve(__dirname,'pages/about.html'))
+    res.render('about');
+})
+
 // app.get('/post', (req, res) => {
 //     res.render('post')
 // })
@@ -60,12 +56,33 @@ app.get('/posts/new', (req, res) => {
     res.render('create')
 })
 
+//c1 chua them tinh nang upload anh
+// app.post('/posts/store', (req, res) => {
+//     // model creates a new doc with browser data
+//     // console.log(req.body);
+// BlogPost.create(req.body, (error, blogpost) => {
+//     res.redirect('/')
+// })
+// })
+
+//c2 da them tinh nang upload anh
 app.post('/posts/store', (req, res) => {
-    // model creates a new doc with browser data
-    // console.log(req.body);
-    BlogPost.create(req.body, (error, blogpost) => {
-        res.redirect('/')
-    })
+    if (req.files != null) {
+        let image = req.files.image;
+        image.mv(path.resolve(__dirname, 'public/upload', image.name), function (err) {
+            BlogPost.create({
+                ...req.body,
+                image: '/upload/' + image.name
+            }, function (err) {
+                res.redirect('/')
+            })
+        })
+    }
+    else {
+        BlogPost.create(req.body, (error, blogpost) => {
+            res.redirect('/')
+        })
+    }
 })
 
 app.get('/post/:id', (req, res) => {
