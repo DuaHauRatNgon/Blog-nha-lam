@@ -1,4 +1,5 @@
 const BlogPost = require('../models/BlogPost.js')
+
 const path = require('path')
 module.exports =  (req, res) => {
     if (req.files != null) {

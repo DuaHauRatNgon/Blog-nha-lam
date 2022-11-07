@@ -6,6 +6,8 @@ const newPostController = require('./controllers/newPost')
 const homeController = require('./controllers/home')
 const storePostController = require('./controllers/storePost')
 const getPostController = require('./controllers/getPost')
+const newRegister = require("./controllers/register");
+const storeUserController = require('./controllers/storeUser');
 
 
 const app = express();
@@ -39,11 +41,16 @@ app.get('/contact', (req, res) => {
     res.render('contact')
 })
 
-app.get('/posts/new',newPostController)
+app.get('/posts/new',newPostController);
 
-app.post('/posts/store',app.post('/posts/store', storePostController))
+app.post('/posts/store',app.post('/posts/store', storePostController));
 
-app.get('/post/:id', getPostController)
+app.get('/post/:id', getPostController);
+
+app.get('/auth/register', newRegister);
+
+app.post('/users/register', storeUserController);
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
