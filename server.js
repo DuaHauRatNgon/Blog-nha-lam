@@ -8,7 +8,8 @@ const storePostController = require('./controllers/storePost')
 const getPostController = require('./controllers/getPost')
 const newRegister = require("./controllers/register");
 const storeUserController = require('./controllers/storeUser');
-
+const loginController = require('./controllers/login');
+const loginUserController = require('./controllers/loginUser')
 
 const app = express();
 const port = 3005;
@@ -51,6 +52,9 @@ app.get('/auth/register', newRegister);
 
 app.post('/users/register', storeUserController);
 
+app.get('/auth/login', loginController);
+
+app.post('/users/login',loginUserController)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
