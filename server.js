@@ -38,9 +38,9 @@ app.get('/about', (req, res) => {
     res.render('about');
 })
 
-app.get('/contact', (req, res) => {
-    res.render('contact')
-})
+// app.get('/contact', (req, res) => {
+//     res.render('contact')
+// })
 
 app.get('/posts/new',newPostController);
 
@@ -54,7 +54,9 @@ app.post('/users/register', storeUserController);
 
 app.get('/auth/login', loginController);
 
-app.post('/users/login',loginUserController)
+app.post('/users/login',loginUserController);
+
+app.use((req, res) => res.render('notfound'));
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
